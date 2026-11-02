@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or "Homelab Dashboard" }}</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Dynamic homelab dashboard</div>
+          <h1>Homelab Dashboard</h1>
+        </div>
+        <nav class="nav">
+          <a href="/">Nodes</a>
+          <a href="/moves">Recent Moves</a>
+        </nav>
+        <div class="statusline">Last poll: {{ last_poll or "unknown" }}</div>
+      </header>
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+      <footer class="footer">Powered by Portainer API</footer>
+    </div>
+  </body>
+</html>

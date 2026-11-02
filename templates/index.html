@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <h2>Nodes</h2>
+  <div class="cards">
+    {% for node in nodes %}
+    <article class="card">
+      <div class="card-header">
+        <div>
+          <h3>{{ node.name }}</h3>
+          <div class="muted">Endpoint {{ node.endpoint_id }}</div>
+        </div>
+        <span class="badge badge-{{ node.status }}">{{ node.status }}</span>
+      </div>
+      <div class="meta-grid">
+        <div><span class="label">IP</span>{{ node.ip or "n/a" }}</div>
+        <div><span class="label">URL</span>{{ node.url or "n/a" }}</div>
+        <div><span class="label">Tags</span>{{ node.tags or "none" }}</div>
+        <div><span class="label">Last seen</span>{{ node.last_seen or "unknown" }}</div>
+      </div>
+      <div class="section">
+        <h4>Containers ({{ node.containers | length }})</h4>
+        {% if node.containers %}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Image</th>
+              <th>State</th>
+              <th>Ports</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in node.containers %}
+            <tr>
+              <td>{{ c.name }}</td>
+              <td>{{ c.image }}</td>
+              <td>{{ c.state }}</td>
+              <td>{{ c.ports or "-" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="muted">No containers reported.</div>
+        {% endif %}
+      </div>
+      {% if node.stacks %}
+      <div class="section">
+        <h4>Stacks</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in node.stacks %}
+            <tr>
+              <td>{{ s.name }}</td>
+              <td>{{ s.status or "-" }}</td>
+              <td>{{ s.type or "-" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+      <div class="card-footer">
+        <a class="button" href="/node/{{ node.endpoint_id }}">View details</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Recent Moves</h2>
+  {% if recent_moves %}
+  <table>
+    <thead>
+      <tr>
+        <th>Container</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Detected</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for move in recent_moves %}
+      <tr>
+        <td>{{ move.container_name }}</td>
+        <td>{{ move.from_name or ("Endpoint " ~ move.from_endpoint_id) }}</td>
+        <td>{{ move.to_name or ("Endpoint " ~ move.to_endpoint_id) }}</td>
+        <td>{{ move.detected_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="muted">No moves detected yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

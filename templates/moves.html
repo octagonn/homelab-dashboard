@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <h2>Recent Moves</h2>
+  {% if moves %}
+  <table>
+    <thead>
+      <tr>
+        <th>Container</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Detected</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for move in moves %}
+      <tr>
+        <td>{{ move.container_name }}</td>
+        <td>{{ move.from_name or ("Endpoint " ~ move.from_endpoint_id) }}</td>
+        <td>{{ move.to_name or ("Endpoint " ~ move.to_endpoint_id) }}</td>
+        <td>{{ move.detected_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="muted">No moves detected yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <div class="page-header">
+    <div>
+      <h2>{{ node.name }}</h2>
+      <div class="muted">Endpoint {{ node.endpoint_id }}</div>
+    </div>
+    <span class="badge badge-{{ node.status }}">{{ node.status }}</span>
+  </div>
+  <div class="meta-grid">
+    <div><span class="label">IP</span>{{ node.ip or "n/a" }}</div>
+    <div><span class="label">URL</span>{{ node.url or "n/a" }}</div>
+    <div><span class="label">Tags</span>{{ node.tags or "none" }}</div>
+    <div><span class="label">Last seen</span>{{ node.last_seen or "unknown" }}</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Containers ({{ containers | length }})</h3>
+  {% if containers %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Image</th>
+        <th>State</th>
+        <th>Ports</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in containers %}
+      <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.image }}</td>
+        <td>{{ c.state }}</td>
+        <td>{{ c.ports or "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="muted">No containers reported.</div>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h3>Stacks ({{ stacks | length }})</h3>
+  {% if stacks %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in stacks %}
+      <tr>
+        <td>{{ s.name }}</td>
+        <td>{{ s.status or "-" }}</td>
+        <td>{{ s.type or "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="muted">No stacks reported.</div>
+  {% endif %}
+</section>
+
+<a class="button" href="/">Back to dashboard</a>
+{% endblock %}

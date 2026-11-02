@@ -1,0 +1,14 @@
+services:
+  dashboard:
+    build: .
+    ports: ["127.0.0.1:8088:8088"]
+    environment:
+      DEMO_MODE: ${DEMO_MODE:-true}
+      PORTAINER_URL: ${PORTAINER_URL:-}
+      PORTAINER_API_KEY: ${PORTAINER_API_KEY:-}
+      POLL_INTERVAL_SECONDS: ${POLL_INTERVAL_SECONDS:-10}
+      DB_PATH: /data/dashboard.sqlite
+    volumes: ["dashboard-data:/data"]
+    restart: unless-stopped
+volumes:
+  dashboard-data:
